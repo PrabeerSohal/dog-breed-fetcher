@@ -30,6 +30,42 @@ public class DogApiBreedFetcher implements BreedFetcher {
         //      to refer to the examples of using OkHttpClient from the last lab,
         //      as well as the code for parsing JSON responses.
         // return statement included so that the starter code can compile and run.
-        return new ArrayList<>();
+        Request request = new Request.Builder()
+                .url("https://dog.ceo/api/breed/" + breed + "/list")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject json = new JSONObject(response.body().string());
+            System.out.println(json.get("message"));
+            String s = json.get("message").toString();
+            s = s.replaceAll("\\[", "");
+            s = s.replaceAll("]", "");
+            s = s.replaceAll("\"", "");
+            List<String> breeds = Arrays.asList(s.split(","));
+            return breeds;
+        }
+        catch(Exception e) {
+            throw new BreedNotFoundException(breed);
+        }
     }
+
+//    public static void main (String[] args) throws IOException {
+//        OkHttpClient client = new OkHttpClient();
+//        Request request = new Request.Builder()
+//                .url("https://dog.ceo/api/breed/" + "hound" + "/list")
+//                .build();
+//        try (Response response = client.newCall(request).execute()) {
+//            JSONObject json = new JSONObject(response.body().string());
+//            System.out.println(json.get("message"));
+//            String s = json.get("message").toString();
+//            s = s.replaceAll("\\[", "");
+//            s = s.replaceAll("]", "");
+//            s = s.replaceAll("\"", "");
+//            List<String> breeds = Arrays.asList(s.split(","));
+//            System.out.println(breeds);
+//
+//
+//        }
+
+//    }
 }
