@@ -30,11 +30,12 @@ public class CachingBreedFetcher implements BreedFetcher {
             List<String> subBreeds = this.fetcher.getSubBreeds(breed);
             this.cache.put(breed, subBreeds);
             this.callsMade += 1;
+            //System.out.println(subBreeds);
+            return subBreeds;
         }
         catch (BreedNotFoundException e){
             return new ArrayList<>();
         }
-        return new ArrayList<>();
 
     }
 
